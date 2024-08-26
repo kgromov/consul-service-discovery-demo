@@ -1,0 +1,15 @@
+version: '3.7'
+
+services:
+  consul-agent:
+    image: hashicorp/consul:latest
+    container_name: consul-server
+    ports:
+      - "8500:8500"
+      - "8600:8600/tcp"
+      - "8600:8600/udp"
+    volumes:
+      - ./consul/data:/consul/data
+    restart: always
+#    command: "agent -retry-join consul-server-bootstrap -client 0.0.0.0"
+    command: "agent -dev -ui -data-dir=/consul/data -client 0.0.0.0"
