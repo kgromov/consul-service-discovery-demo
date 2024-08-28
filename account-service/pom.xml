@@ -48,4 +48,25 @@
         </dependency>
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <image>
+                        <name>kgromov/account-service</name>
+                        <publish>true</publish>
+                    </image>
+                    <docker>
+                        <publishRegistry>
+                            <username>kgromov</username>
+                            <password>${env.DOCKER_HUB_PASSWORD}</password>
+                        </publishRegistry>
+                    </docker>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
