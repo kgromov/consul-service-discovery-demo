@@ -5,5 +5,8 @@ spring:
     consul:
       host: localhost
       port: 8500
+  docker:
+    compose:
+      lifecycle-management: start_only
 server:
   port: 8081

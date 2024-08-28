@@ -7,6 +7,9 @@ spring:
       port: 8500
       discovery:
         service-name: person-service
+  docker:
+    compose:
+      lifecycle-management: start_only
 
 server:
   port: 8082
