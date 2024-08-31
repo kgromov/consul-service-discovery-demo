@@ -1,8 +1,10 @@
 version: '3.7'
 
+# Try out with config files (.hcl) and sub-networks: https://github.com/hashicorp/consul-demo-tracing/blob/master/jaeger/docker-compose.yml
 services:
   account-service:
     image: account-service
+#    image: kgromov/account-service:latest
     container_name: account-service
     build:
       context: ./account-service
