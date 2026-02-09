@@ -3,18 +3,14 @@ package org.kgromov;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.javamoney.moneta.Money;
 import org.kgromov.model.CreditCard;
 import org.kgromov.model.Person;
-import org.kgromov.model.PersonInfo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.ConfigurationPropertiesBinding;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.convert.converter.Converter;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,7 +30,6 @@ public class PersonServiceApplication {
     public RestTemplate loadbalancedRestTemplate() {
         return new RestTemplate();
     }
-
 }
 
 @Slf4j
@@ -51,7 +46,10 @@ class PersonController {
     }
 
     @GetMapping("/{id}/credit-card")
-    public CreditCard getPersonCreditCard(@PathVariable long id) {
+    public CreditCard getPersonCreditCard(
+            @PathVariable long id,
+            @Value("${account:app:service-id}") String accountServiceId
+    ) {
         discoveryClient.getInstances("account-service").forEach(i -> {
             log.debug("SERVICE ID = {}", i.getServiceId());
             log.debug("SCHEME = {}", i.getScheme());
@@ -62,7 +60,7 @@ class PersonController {
         });
         return RestClient.create(loadbalancedRestTemplate)
                 .get()
-                .uri("http://account-service/api/accounts/{id}/credit-card", id)
+                .uri("http://{accountServiceId}/api/accounts/{id}/credit-card", accountServiceId, id)
                 .retrieve()
                 .body(CreditCard.class);
     }

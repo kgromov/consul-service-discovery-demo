@@ -13,3 +13,5 @@ spring:
       lifecycle-management: none
 server:
   port: 8081
+
+person:app:service-id: person-service
