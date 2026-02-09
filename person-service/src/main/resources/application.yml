@@ -7,9 +7,11 @@ spring:
       port: 8500
       discovery:
         service-name: person-service
+        heartbeat:
+          enabled: true
   docker:
     compose:
-      lifecycle-management: start_only
+      lifecycle-management: none
 
 server:
   port: 8082
