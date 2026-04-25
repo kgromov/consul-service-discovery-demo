@@ -12,8 +12,31 @@ spring:
   docker:
     compose:
       lifecycle-management: none
+  otlp:
+    metrics:
+      export:
+        url: http://localhost:4318/v1/metrics
+    opentelemetry:
+      tracing:
+        export:
+          otlp:
+            endpoint: http://localhost:4318/v1/traces
+    logging:
+      export:
+        otlp:
+          endpoint: http://localhost:4318/v1/logs
 
 server:
   port: 8082
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  level:
+    org.springframework.boot.actuator.autoconfigure.opentelemetry: DEBUG
+    org.springframework.boot.docker.compose: DEBUG
 
 account:app:service-id: account-service

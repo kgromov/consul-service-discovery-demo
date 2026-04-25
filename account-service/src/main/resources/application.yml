@@ -8,10 +8,33 @@ spring:
       discovery:
         heartbeat:
           enabled: true
+  otlp:
+    metrics:
+      export:
+        url: http://localhost:4318/v1/metrics
+    opentelemetry:
+      tracing:
+        export:
+          otlp:
+            endpoint: http://localhost:4318/v1/traces
+    logging:
+      export:
+        otlp:
+          endpoint: http://localhost:4318/v1/logs
   docker:
     compose:
       lifecycle-management: none
 server:
   port: 8081
+
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+
+logging:
+  level:
+    org.springframework.boot.actuator.autoconfigure.opentelemetry: DEBUG
+    org.springframework.boot.docker.compose: DEBUG
 
 person:app:service-id: person-service
